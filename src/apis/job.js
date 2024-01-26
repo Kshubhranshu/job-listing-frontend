@@ -1,5 +1,5 @@
 import axios from "axios";
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = `${process.env.REACT_APP_BACKEND_URL}/job`;
 
 export const getAllJobs = ({ skills, title }) => {
     try {
@@ -17,6 +17,31 @@ export const getJobDetails = ({ jobId }) => {
         const reqUrl = `${backendUrl}/job-description/${jobId}`;
         const response = axios.get(reqUrl);
         console.log(response);
+    } catch (error) {
+        console.log(error);
+        // toast with custom message for clients
+    }
+};
+
+export const createJobPost = async ({
+    companyName,
+    logoUrl,
+    title,
+    description,
+}) => {
+    try {
+        const reqUrl = `${backendUrl}/create`;
+        const reqPayload = {
+            companyName,
+            logoUrl,
+            title,
+            description,
+        };
+
+        const token = localStorage.getItem("token");
+        axios.defaults.headers.common["Authorization"] = token;
+        const response = await axios.post(reqUrl, reqPayload);
+        return response;
     } catch (error) {
         console.log(error);
         // toast with custom message for clients

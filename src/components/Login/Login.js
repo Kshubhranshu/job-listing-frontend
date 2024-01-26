@@ -14,7 +14,6 @@ export const Login = () => {
         event.preventDefault();
 
         const response = await loginUser({ ...data });
-        debugger;
         if (response) {
             localStorage.setItem("token", response.token);
             localStorage.setItem("userName", response.name);

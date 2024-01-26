@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
+import JobDetailsPage from "./pages/JobDetailsPage/JobDetailsPage";
+import JobPost from "./pages/JobPost/JobPost";
 
 function App() {
     return (
@@ -8,8 +10,8 @@ function App() {
             <Routes>
                 <Route path="/register" element={<RegisterPage />} />
                 {/* <Route path="/" element={<RegisterPage />} /> */}
-                {/* <Route path="/job-details" element={<RegisterPage />} /> */}
-                {/* <Route path="/job-post" element={<RegisterPage />} /> */}
+                <Route path="/job-details/:id" element={<JobDetailsPage />} />
+                <Route path="/job-post" element={<JobPost />} />
                 <Route path="/login" element={<LoginPage />} />
             </Routes>
         </BrowserRouter>

@@ -18,7 +18,6 @@ export const loginUser = async ({ email, password }) => {
         const reqUrl = `${backendUrl}/auth/login`;
         const reqPayload = { email, password };
         const response = await axios.post(reqUrl, reqPayload);
-        debugger;
         return response.data;
     } catch (error) {
         console.log(error);
