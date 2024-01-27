@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./JobPostForm.module.css";
-import { createJobPost } from "../../apis/job";
+import { createJobPost, updateJobPost } from "../../apis/job";
 
 export default function JobPostForm() {
-    const [isEditExistingJobPost] = useState(false);
+    const { state } = useLocation();
+
+    const [isEditExistingJobPost] = useState(false || state?.edit);
     const [formData, setFormData] = useState({
-        companyName: "",
-        logoUrl: "",
-        title: "",
-        description: "",
+        companyName: "" || state?.data?.companyName,
+        logoUrl: "" || state?.data?.logoUrl,
+        title: "" || state?.data?.title,
+        description: "" || state?.data?.description,
         skills: "",
     });
 
@@ -17,10 +20,18 @@ export default function JobPostForm() {
     };
 
     const handleSubmit = async (event) => {
-        await createJobPost({
-            ...formData,
-            skills: formData.skills.split(","),
-        });
+        if (isEditExistingJobPost) {
+            if (!state.id) return;
+            await updateJobPost(state.id, {
+                ...formData,
+                skills: formData.skills.split(","),
+            });
+        } else {
+            await createJobPost({
+                ...formData,
+                skills: formData.skills.split(","),
+            });
+        }
     };
 
     useEffect(() => {
@@ -41,7 +52,7 @@ export default function JobPostForm() {
                         className={styles.input}
                         type="text"
                         name="companyName"
-                        // value={formData.companyName}
+                        value={formData?.companyName}
                         onChange={handleChange}
                         placeholder="Enter company name"
                     />
@@ -55,7 +66,7 @@ export default function JobPostForm() {
                         className={styles.input}
                         type="text"
                         name="logoUrl"
-                        // value={formData.logoURL}
+                        value={formData?.logoUrl}
                         onChange={handleChange}
                         placeholder="Enter logo URL"
                     />
@@ -69,7 +80,7 @@ export default function JobPostForm() {
                         className={styles.input}
                         type="text"
                         name="title"
-                        // value={formData.position}
+                        value={formData?.title}
                         onChange={handleChange}
                         placeholder="Enter job position"
                     />
@@ -83,7 +94,7 @@ export default function JobPostForm() {
                         className={styles.input}
                         type="text"
                         name="description"
-                        // value={formData.description}
+                        value={formData?.description}
                         onChange={handleChange}
                         placeholder="Enter job salary"
                     />
